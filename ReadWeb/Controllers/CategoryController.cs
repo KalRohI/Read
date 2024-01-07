@@ -22,15 +22,63 @@ namespace ReadWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Category category) 
+        public IActionResult Create(Category category)
         {
             if (ModelState.IsValid)
             {
                 _db.Categories.Add(category);
                 _db.SaveChanges();
+                TempData["Success"] = "Category Created Successfully";
                 return RedirectToAction("Index");
             }
             return View();
         }
+
+        public IActionResult Edit(int? id)
+        {
+            if(id == null || id == 0) 
+            { 
+                return NotFound();
+            }
+            Category? categoryFromDb = _db.Categories.Find(id);
+            if (categoryFromDb == null) { return NotFound(); }
+            return View(categoryFromDb);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Categories.Update(category);
+                _db.SaveChanges();
+                TempData["Success"] = "Category Updated Successfully";
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Category? categoryFromDb = _db.Categories.Find(id);
+            if (categoryFromDb == null) { return NotFound(); }
+            return View(categoryFromDb);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePost(int? id)
+        {
+            Category? obj = _db.Categories.Find(id);
+            if(obj == null) { return NotFound(); }
+            _db.Categories.Remove(obj);
+            _db.SaveChanges();
+            TempData["Success"] = "Category Deleted Successfully";
+            return RedirectToAction("Index");
+        }
+
     }
 }
