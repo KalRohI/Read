@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReadWeb.Models;
+using Read.Models;
 
-namespace ReadWeb.Data
+namespace Read.DataAccess.Data
 {
     public class ApplicationDbContext:DbContext
     {

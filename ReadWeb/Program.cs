@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ReadWeb.Data;
+using Read.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

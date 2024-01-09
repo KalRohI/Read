@@ -1,4 +1,4 @@
-namespace ReadWeb.Models
+namespace Read.Models
 {
     public class ErrorViewModel
     {

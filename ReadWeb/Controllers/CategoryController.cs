@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ReadWeb.Data;
-using ReadWeb.Models;
+using Read.DataAccess.Data;
+using Read.Models;
 
 namespace ReadWeb.Controllers
 {
