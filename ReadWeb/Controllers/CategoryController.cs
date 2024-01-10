@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Read.DataAccess.Data;
+using Read.DataAccess.Repository.IRepository;
 using Read.Models;
 
 namespace ReadWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db) {
-            _db = db;
+        private readonly ICategoryRepository _categoryRepo;
+        public CategoryController(ICategoryRepository db) {
+            _categoryRepo = db;
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList=_db.Categories.ToList();
+            List<Category> objCategoryList=_categoryRepo.GetAll().ToList();
             return View(objCategoryList);
         }
 
@@ -26,8 +27,8 @@ namespace ReadWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(category);
-                _db.SaveChanges();
+                _categoryRepo.Add(category);
+                _categoryRepo.Save();
                 TempData["Success"] = "Category Created Successfully";
                 return RedirectToAction("Index");
             }
@@ -40,7 +41,7 @@ namespace ReadWeb.Controllers
             { 
                 return NotFound();
             }
-            Category? categoryFromDb = _db.Categories.Find(id);
+            Category? categoryFromDb = _categoryRepo.Get(u=>u.Id==id);
             if (categoryFromDb == null) { return NotFound(); }
             return View(categoryFromDb);
         }
@@ -50,8 +51,8 @@ namespace ReadWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(category);
-                _db.SaveChanges();
+                _categoryRepo.Update(category);
+                _categoryRepo.Save();
                 TempData["Success"] = "Category Updated Successfully";
                 return RedirectToAction("Index");
             }
@@ -64,7 +65,7 @@ namespace ReadWeb.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _db.Categories.Find(id);
+            Category? categoryFromDb = _categoryRepo.Get(u => u.Id == id);
             if (categoryFromDb == null) { return NotFound(); }
             return View(categoryFromDb);
         }
@@ -72,10 +73,10 @@ namespace ReadWeb.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Category? obj = _db.Categories.Find(id);
-            if(obj == null) { return NotFound(); }
-            _db.Categories.Remove(obj);
-            _db.SaveChanges();
+            Category? obj = _categoryRepo.Get(u => u.Id == id);
+            if (obj == null) { return NotFound(); }
+            _categoryRepo.Remove(obj);
+            _categoryRepo.Save();
             TempData["Success"] = "Category Deleted Successfully";
             return RedirectToAction("Index");
         }
