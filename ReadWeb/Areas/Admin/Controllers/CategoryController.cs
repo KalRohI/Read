@@ -3,21 +3,23 @@ using Read.DataAccess.Data;
 using Read.DataAccess.Repository.IRepository;
 using Read.Models;
 
-namespace ReadWeb.Controllers
+namespace ReadWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CategoryController(IUnitOfWork unitOfWork) {
+        public CategoryController(IUnitOfWork unitOfWork)
+        {
             _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList= _unitOfWork.Category.GetAll().ToList();
+            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
             return View(objCategoryList);
         }
 
-        public IActionResult Create() 
+        public IActionResult Create()
         {
             return View();
         }
@@ -37,11 +39,11 @@ namespace ReadWeb.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if(id == null || id == 0) 
-            { 
+            if (id == null || id == 0)
+            {
                 return NotFound();
             }
-            Category? categoryFromDb = _unitOfWork.Category.Get(u=>u.Id==id);
+            Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
             if (categoryFromDb == null) { return NotFound(); }
             return View(categoryFromDb);
         }
