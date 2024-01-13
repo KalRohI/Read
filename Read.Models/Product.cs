@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Read.Models
 {
@@ -39,5 +41,12 @@ namespace Read.Models
         [Display(Name = "List Price for 100+")]
         [Range(1, 1000)]
         public double Price100 { get; set; }
+
+        public int CategoryID {  get; set; }
+        [ForeignKey(nameof(CategoryID))]
+        [ValidateNever]
+        public Category Category { get; set; }
+        [ValidateNever]
+        public string ImageURL {  get; set; }
     }
 }
